@@ -91,7 +91,7 @@ namespace AutotestExample.PageObject
 
             try
             {
-                driver.FindElement(By.XPath("//button[@data-name='UserAvatar']")).Click();
+                driver.FindElement(By.XPath("//a[@data-name='UserAvatar']")).Click();
 
              }
             catch (Exception)
@@ -340,7 +340,6 @@ namespace AutotestExample.PageObject
             }
             catch (Exception)
             {
-                logger.Error("Не удалось авторизоваться. Тест прерван.");
                 System.Threading.Thread.CurrentThread.Abort();
             }
             try
@@ -350,7 +349,6 @@ namespace AutotestExample.PageObject
             }
             catch (Exception)
             {
-                logger.Error("Не удалось нажать кнопку Войти. Тест прерван.");
                 System.Threading.Thread.CurrentThread.Abort();
             }
             driver.FindElement(By.XPath("//span[contains(text(),'Войти')]/parent::div")).Click();
@@ -422,7 +420,6 @@ namespace AutotestExample.PageObject
             }
             catch (Exception)
             {
-                logger.Error("Не удалось авторизоваться. Тест прерван.");
                 System.Threading.Thread.CurrentThread.Abort();
             }
             try
@@ -432,7 +429,6 @@ namespace AutotestExample.PageObject
             }
             catch (Exception)
             {
-                logger.Error("Не удалось нажать кнопку Войти. Тест прерван.");
                 System.Threading.Thread.CurrentThread.Abort();
             }
             driver.FindElement(By.XPath("//button[@data-bind='click: login']")).Click();
@@ -504,7 +500,6 @@ namespace AutotestExample.PageObject
             }
             catch (Exception)
             {
-                logger.Error("Не удалось авторизоваться. Тест прерван.");
                 System.Threading.Thread.CurrentThread.Abort();
             }
             try
@@ -514,7 +509,6 @@ namespace AutotestExample.PageObject
             }
             catch (Exception)
             {
-                logger.Error("Не удалось нажать кнопку Войти. Тест прерван.");
                 System.Threading.Thread.CurrentThread.Abort();
             }
             driver.FindElement(By.XPath("//button[@data-bind='click: login']")).Click();
@@ -739,7 +733,6 @@ namespace AutotestExample.PageObject
 
     class CreateDogovorforPaymentSystemTest
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
         //15.8
         public static string CreateDogovorforPaymentSystemAgencyTestAfter10DaysFromCurrentDate(IWebDriver driver)
         {
@@ -1038,7 +1031,6 @@ namespace AutotestExample.PageObject
 
     class PaymentsOnPaymentGateway
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
         //редактируем сумму и проверяем комиссию
         public static void EditSummPayments(string PaymentsSum, string expectedComission, IWebDriver driver)
         {

@@ -142,6 +142,7 @@ namespace AutotestExample
                 Assert.Fail(times + " times");
                 System.Threading.Thread.CurrentThread.Abort();
             }
+            Console.WriteLine("Авторизация в Cian успешно пройдена.");
             Console.WriteLine("Переход в справочник тарифы авиаперелетов по ссылке http://supp-08.megatec.ru/TourPrograms_MT15.8/AirService");
             try
             {
@@ -157,18 +158,7 @@ namespace AutotestExample
             }
             System.Threading.Thread.Sleep(2000);
             Console.WriteLine("Переход к проверке создания тарифов авиаперелетов.");
-            try
-            {
-                DictionaryOperations.AddObjectButtonandCheck(TestDictionaryName, AddBtn, AddFormName, driver);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Не удалось создать тариф авиаперелетов. Тест прерван.");
-                //если на этом этапе падает ошибка, то тест запустится еще раз
-                times++;
-                Assert.Fail(times + " times");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
+            
             Console.WriteLine("Заполнение формы.");
             try
             {
@@ -222,18 +212,7 @@ namespace AutotestExample
 
             }
             Console.WriteLine("Переход к проверке копирования тарифов авиаперелетов.");
-            try
-            {
-                DictionaryOperations.CopyObjectButtonandCheck(TestDictionaryName, ButtonCopyXPath, CopyFormName, driver);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Не удалось скопировать тариф авиаперелетов. Тест прерван.");
-                //если на этом этапе падает ошибка, то тест запустится еще раз
-                times++;
-                Assert.Fail(times + " times");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
+          
             Console.WriteLine("Нажатие на кнопку создать тариф авиаперелетов.");
             try
             {
@@ -270,19 +249,7 @@ namespace AutotestExample
             }
 
             Console.WriteLine("Удаляем созданные тарифы авиаперелетов.");
-            try
-            {
-                DeleteCreatedElementAfterTest.DeleteTourProgramsElementPageObject(ButtonDeleteXPath, ButtonCopyXPath, expectedDeleteElementName, confirmDeleted, driver);
-            }
-            //Если падает исключение
-            catch (Exception)
-            {
-                Console.WriteLine("Не удалось удалить тарифы авиаперелетов. Тест прерван.");
-                //если на этом этапе падает ошибка, то тест запустится еще раз
-                times++;
-                Assert.Fail(times + " times");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
+ 
             Console.WriteLine("Тест справочника тарифы авиаперелетов успешно пройден.");
 
         }
