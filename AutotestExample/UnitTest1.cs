@@ -122,7 +122,7 @@ namespace AutotestExample
             Console.WriteLine("Инициализация переменных");
             string login = "efremov_test@rambler.ru";
             string password = "HiCian123";
-            string expectedCianusername = "//a[contains (text(),'ID 113000074')]";
+            string expectedCianusername = "ID 113000074";
             By AddBtn = By.XPath("//input[@class='btn btn-primary']");
             By AddFormName = By.XPath("//*[contains(text(), 'Создание тарифа')]");
             By CopyFormName = By.XPath("//*[contains(text(), 'Копирование тарифа')]");
