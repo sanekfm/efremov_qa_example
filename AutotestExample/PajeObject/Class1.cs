@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;//span[@data-bind=&apos;text: loginUpperTitle()&apos;]&quot;}
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,88 @@ namespace AutotestExample.PageObject
 
 {
     [AllureNUnit]
-    class EditConfigPageObject
+
+    class AutorizationPageObject
+    {
+        public static void AutorizationCianPageObject(string login, string password, string expectedCianusername, IWebDriver driver)
+        {
+            Console.WriteLine("Переход на страницу Cian.");
+            try
+            {
+                driver.Navigate().GoToUrl("https://astrahan.cian.ru/");
+            }
+            catch
+            {
+                Console.WriteLine("Не удалось перейти на страницу авторизации.");
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+            Console.WriteLine("Проверяем, что страница Cian загружена.");
+            try
+            {
+                WebDriverWait wait1 = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                wait1.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//span[contains (text(),'Войти')]")));
+            }
+            catch
+            {
+                Console.WriteLine("Страница не загружена. Тест прерван.");
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+            Console.WriteLine("Нажимаем на кнопку войти на главной странице.");
+            try
+            {
+                driver.FindElement(By.XPath("//span[contains (text(),'Войти')]")).Click();
+
+            }
+            catch
+            {
+                Console.WriteLine("Окно авторизации не открылось. Тест прерван.");
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+
+            Console.WriteLine("Заполнение формы авторизации. Тест прерван.");
+            try
+            {
+                driver.FindElement(By.XPath("//button[@data-name='SwitchToEmailAuthBtn']")).Click();
+                driver.FindElement(By.XPath("//input[@name='username']")).SendKeys(login);
+                driver.FindElement(By.XPath("//button[@data-name='ContinueAuthBtn']")).Click();
+                driver.FindElement(By.XPath("//input[@name='password']")).SendKeys(password);
+                driver.FindElement(By.XPath("//button[@data-name='ContinueAuthBtn']")).Click();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Не удалось заполнить форму авторизации. Тест прерван.");
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+            Console.WriteLine("Проверяем, что авторизовались с корректным логином.");
+            Console.WriteLine("Нажимаем на кнопку с аватаром пользователя");
+
+            try
+            {
+                driver.FindElement(By.XPath("//a[@data-name='UserAvatar']")).Click();
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Не удалось нажать кнопку. Тест прерван.");
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+            Console.WriteLine("Проверяем, что ID соответствует ожидаемому.");
+            try
+            {
+                var actualLoginCian = driver.FindElement(By.XPath("//a[contains (text(),'ID 113000074')]")).Text;
+                Assert.AreEqual(expectedCianusername, actualLoginCian, "Login is wrong");
+                Console.WriteLine("ID соответствует ожидаемому.Авторизация прошла успешно.");
+            }
+            //Если падает исключение
+            catch (Exception)
+            {
+                Console.WriteLine("ID не соответствует ожидаемому.Тест прерван.");
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+        }
+
+
+        class EditConfigPageObject
     {
         public static void PaymentSystem(string filePath, string searchText, string replaceText)
         {
@@ -39,80 +120,11 @@ namespace AutotestExample.PageObject
 
     }
 
-    class AutorizationPageObject
-    {
-
-        public static void AutorizationCianPageObject(string login, string password, string expectedCianusername, IWebDriver driver)
-        {
-            string name = TestContext.CurrentContext.Test.MethodName;
-            try
-            {
-                Console.WriteLine("Переход на страницу Cian.");
-                driver.Navigate().GoToUrl("https://astrahan.cian.ru/");
-            }
-            catch
-            {
-                Console.WriteLine("Не удалось перейти на страницу авторизации.");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
-            Console.WriteLine("Проверяем, что страница Cian загружена.");
-            try
-            {
-                WebDriverWait wait1 = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-                wait1.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//span[contains (text(),'Войти')]")));
-            }
-            catch
-            {
-                Console.WriteLine("Окно авторизации не открылось. Тест прерван.");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
-            Console.WriteLine("Нажимаем на кнопку войти");
-            try
-            {
-                driver.FindElement(By.XPath("//span[contains (text(),'Войти')]")).Click();
    
-                
-            }
-            catch
-            {
-                Console.WriteLine("Окно авторизации не открылось. Тест прерван.");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
-
-
-            driver.FindElement(By.XPath("//button[@data-name='SwitchToEmailAuthBtn']")).Click();
-            driver.FindElement(By.XPath("//input[@name='username']")).SendKeys(login);
-            driver.FindElement(By.XPath("//button[@data-name='ContinueAuthBtn']")).Click();
-            driver.FindElement(By.XPath("//input[@name='password']")).SendKeys(password);
-            driver.FindElement(By.XPath("//button[@data-name='ContinueAuthBtn']")).Click();
 
 
 
 
-            try
-            {
-                driver.FindElement(By.XPath("//a[@data-name='UserAvatar']")).Click();
-
-             }
-            catch (Exception)
-            {
-                Console.WriteLine("Не удалось авторизоваться. Тест прерван.");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
-
-            try
-                {
-                    var actualLoginCian = driver.FindElement(By.XPath("//a[contains (text(),'ID 113000074')]")).Text;
-                    Assert.AreEqual(expectedCianusername, actualLoginCian, "Login is wrong");
-                    Console.WriteLine("Авторизация прошла успешно.");
-                }
-                //Если падает исключение
-                catch (Exception)
-                {
-                    Console.WriteLine("Не удалось авторизоваться. Тест прерван.");
-                    System.Threading.Thread.CurrentThread.Abort();
-                }
-        }
 
         public static void AutorizationAdminMasterWebPageObject(string login, string password, By expectedMasterWebAdminusername, IWebDriver driver)
         {
