@@ -37,9 +37,8 @@ using System.Text.Encodings.Web;
 
 namespace AutotestExample
 {
-    [NUnit.Framework.Category("MainTest")]
-    [NUnit.Framework.Category("All")]
-    [NUnit.Framework.Category("TourPrograms")]
+    [NUnit.Framework.Category("CianTest")]
+    [NUnit.Framework.Category("Cian")]
     [AllureNUnit]
     public class Tests
     {
