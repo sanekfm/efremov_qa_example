@@ -44,58 +44,9 @@ namespace AutotestExample
     public class Tests
     {
         private IWebDriver driver;
-        string loginMasterWebAgency = "test2";
-        string passwordMasterWebAgency = "1";
-        By expectedUserAfterAutorizationMasterWebAgency = By.XPath("//a[contains (text(),'Ваш логин test2')]");
-        By expectedUserAfterAutorizationMasterWebPersonal = By.XPath("//a[contains (text(),'Ваш логин aefremov@megatec.ru')]");
-        By expectedMasterWebAdminusername = By.XPath("//a[contains (text(),'Ваш логин MT15')]");
-        string loginMasterWebPersonal = "aefremov@megatec.ru";
-        string passwordMasterWebPersonal = "Pilot410192";
-        string loginTourPrograms = "MT15";
-        string passwordTourPrograms = "1";
-        string loginMWAdmin = "MT15";
-        string passwordMWAdmin = "1";
-        By expectedTourProgramsusername = By.XPath("//ul[@class='nav navbar-nav navbar-right']/li/span"); //Test 1.//
-        string loginCanaryAgency = "test2";
-        string passwordCanaryAgency = "1";
-        string expectedUserAfterAutorizationCanaryAgency = "Агентство";
-        string expectedRegisterLoginCanary = "Тестовый+партнер";
-        string loginCanaryPersonal = "aefremov@megatec.ru";
-        string passwordCanaryPersonal = "Pilot410192";
-        string loginTSCAgency = "test2";
-        string passwordTSCAgency = "1";
-        string expectedUserAfterAutorizationTSCAgency = "Агентство";
-        string loginTSCPersonal = "aefremov@megatec.ru";
-        string passwordTSCPersonal = "Pilot410192";
-        string expectedUserAfterAutorizationTSCPersonal = "aefremov@megatec.ru";
-        string expectedUserAfterAutorizationCanaryPersonal = "aefremov@megatec.ru";
-        //для мастерфинанса базы
-        string loginTSCAgencyMF = "test2";
-        string passwordTSCAgencyMF = "1";
-        string expectedUserAfterAutorizationTSCAgencyMF = "Партнер-покупатель122";
-        string loginTSCPersonalMF = "aefremov@megatec.ru";
-        string passwordTSCPersonalMF = "Pilot410192";
-        string expectedUserAfterAutorizationTSCPersonalMF = "aefremov@megatec.ru";
-        string expectedcomissionAgencyTinkoffFullPayment = "100692,00 рб";
-        string expectedcomissionPersonalTinkoffFullPayment = "123120,00 рб";
-        string expectedcomissionAgencyUnitellerFullPayment = "102892,42 рб";
-        string expectedcomissionPersonalUnitellerFullPayment = "152532,03 рб";
-        string expectedcomissionAgencySberbankFullPayment = "101277,00 рб";
-        string expectedcomissionPersonalSberbankFullPayment = "134440,00 рб";
-        string expectedcomissionAgencyAssistFullPayment = "101898,00 рб";
-        string expectedcomissionPersonalAssistFullPayment = "146430,00 рб";
-        string expectedcomissionAgencyPayOnlineFullPayment = "104940,00 рб";
-        string expectedcomissionPersonalPayOnlineFullPayment = "141600,00 рб";
-        string expectedcomissionAgencyWebPayFullPayment = "101277,00 рб";
-        string expectedcomissionPersonalWebPayFullPayment = "134440,00 рб";
-        string expectedOrderSummAgencyWithoutComissionService = "90000,00 рб";
-        string expectedOrderSummPersonalWithoutComissionService = "100000,00 рб";
-        string editSumPersonalPart1 = "99000 рб (99000,00 рб)";
-        string editSumPersonalPart2 = "98000 рб (98000,00 рб)";
-        string editSumAgencyPart1 = "89000 рб (89000,00 рб)";
-        string editSumAgencyPart2 = "88000 рб (88000,00 рб)";
-        string ifFullPaySucces = "0 рб (0,00 рб)";
-        string orderNumber;
+        string login = "efremov_test@rambler.ru";
+        string password = "HiCian123";
+        string expectedCianusername = "ID 113000074";
 
         [SetUp]
         public void Setup()
@@ -108,13 +59,38 @@ namespace AutotestExample
         }
 
 
-        //****************************
-
-        //авторизация в турпрограммах
-        [Test, Order(1), Timeout(800000), Retry(5)]
+        [Test, Order(1), Timeout(800000), Retry(2)]
         [AllureSuite("Cian")]
-        [AllureFeature("CianTest")]
-        public void AutorizationTourPrograms()
+        [AllureFeature("CianAutorization")]
+        public void CianAutorization()
+        {
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            int times = 0;
+            Console.WriteLine("Запуск теста проверки авторизации сайта Cian.");
+            Console.WriteLine("Инициализация переменных");
+            Console.WriteLine("Авторизация в Cian");
+            try
+            {
+                AutorizationPageObject.AutorizationCianPageObject(login, password, expectedCianusername, driver);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Не удалось авторизоваться. Тест прерван.");
+                //если на этом этапе падает ошибка, то тест запустится еще раз
+                times++;
+                Assert.Fail(times + " times");
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+            Console.WriteLine("Тест проверки авторизации в Cian успешно пройден.");
+
+        }
+
+    
+
+        [Test, Order(2), Timeout(800000), Retry(2)]
+        [AllureSuite("Cian")]
+        [AllureFeature("CianPage")]
+        public void CianRentPage ()
         {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             int times = 0;
@@ -123,12 +99,6 @@ namespace AutotestExample
             string login = "efremov_test@rambler.ru";
             string password = "HiCian123";
             string expectedCianusername = "ID 113000074";
-            By AddBtn = By.XPath("//input[@class='btn btn-primary']");
-            By AddFormName = By.XPath("//*[contains(text(), 'Создание тарифа')]");
-            By CopyFormName = By.XPath("//*[contains(text(), 'Копирование тарифа')]");
-            By ButtonDeleteXPath = By.XPath("//button[@class='btn btn-primary btn-sm btn-danger btn-xs']");
-            By ButtonCopyXPath = By.XPath("//button[@class='btn btn-primary btn-xs icon_small']");
-            By confirmDeleted = By.XPath("//button[@class='btn btn-primary']/span[contains(text(),'Да')]");
             Console.WriteLine("Авторизация в Cian");
             try
             {
@@ -143,114 +113,23 @@ namespace AutotestExample
                 System.Threading.Thread.CurrentThread.Abort();
             }
             Console.WriteLine("Авторизация в Cian успешно пройдена.");
-            Console.WriteLine("Переход в справочник тарифы авиаперелетов по ссылке http://supp-08.megatec.ru/TourPrograms_MT15.8/AirService");
+            Console.WriteLine("Проверка работы страницы на вкладке Аренда.");
             try
             {
-                driver.Navigate().GoToUrl("http://supp-08.megatec.ru/TourPrograms_MT15.8/AirService");
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Запрашиваемая страница не существует. Тест прерван.");
-                //если на этом этапе падает ошибка, то тест запустится еще раз
-                times++;
-                Assert.Fail(times + " times");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
-            System.Threading.Thread.Sleep(2000);
-            Console.WriteLine("Переход к проверке создания тарифов авиаперелетов.");
-            
-            Console.WriteLine("Заполнение формы.");
-            try
-            {
-                driver.FindElement(By.Id("roomCategoriesName")).SendKeys("Тариф Авиа");
-                System.Threading.Thread.Sleep(1000);
-                driver.FindElement(By.Id("roomCategoriesCode")).SendKeys("PIU");
-                System.Threading.Thread.Sleep(1000);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Не удалось заполнить форму. Тест прерван.");
-                //если на этом этапе падает ошибка, то тест запустится еще раз
-                times++;
-                Assert.Fail(times + " times");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
-            Console.WriteLine("Нажатие на кнопку создать тариф авиаперелета.");
-            try
-            {
-                driver.FindElement(By.XPath("//div[@id='CreateEditAirServiceDialog']/div/div/button/span[contains(text(),'Сохранить')]")).Click();
-                System.Threading.Thread.Sleep(1000);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Сохранение не удалось. Тест прерван.");
-                //если на этом этапе падает ошибка, то тест запустится еще раз
-                times++;
-                Assert.Fail(times + " times");
-                System.Threading.Thread.CurrentThread.Abort();
-            }
-            //ждем Change Tracking и обновляем страницу
-            System.Threading.Thread.Sleep(30000);
-            driver.Navigate().Refresh();
-            Console.WriteLine("Проверка, что тариф авиаперелетов создан успешно.");
-            driver.FindElement(By.Id("airServiceSearch")).SendKeys("Тариф Авиа");
-            System.Threading.Thread.Sleep(1000);
-            try
-            {
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-                wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(text(), 'Тариф Авиа')]")));
-                Console.WriteLine("Тариф авиаперелета успешно создан.");
-            }
-            //Если падает исключение
-            catch (Exception)
-            {
-                Console.WriteLine("Тариф авиаперелета отсутствует в списке. Тест прерван.");
-                //если на этом этапе падает ошибка, то тест запустится еще раз
-                times++;
-                Assert.Fail(times + " times");
-                System.Threading.Thread.CurrentThread.Abort();
+                driver.FindElement(By.XPath("//li/a[contains(text(), 'Аренда')]")).Click();
 
-            }
-            Console.WriteLine("Переход к проверке копирования тарифов авиаперелетов.");
-          
-            Console.WriteLine("Нажатие на кнопку создать тариф авиаперелетов.");
-            try
-            {
-                driver.FindElement(By.XPath("//div[@id='CreateEditAirServiceDialog']/div/div/button/span[contains(text(),'Сохранить')]")).Click();
-                System.Threading.Thread.Sleep(1000);
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+                wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//h1[contains(text(), 'Аренда недвижимости в Астрахани')]")));
             }
             catch (Exception)
             {
-                Console.WriteLine("Не удалось выполнить сохранение. Тест прерван.");
-                //если на этом этапе падает ошибка, то тест запустится еще раз
-                times++;
-                Assert.Fail(times + " times");
-                System.Threading.Thread.CurrentThread.Abort();
-
-            }
-            //ждем Change Tracking и обновляем страницу
-            System.Threading.Thread.Sleep(30000);
-            driver.Navigate().Refresh();
-            Console.WriteLine("Проверка, что тариф авиаперелетов скопирован успешно.");
-            try
-            {
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-                wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(text(),'Копия Тариф Авиа')]")));
-                Console.WriteLine("Тариф авиаперелетов успешно скопирован.");
-            }
-            //Если падает исключение
-            catch (Exception)
-            {
-                Console.WriteLine("Тариф авиаперелетов отсутствует. Тест прерван.");
+                Console.WriteLine("Элементы страницы не загрузились.Тест прерван.");
                 //если на этом этапе падает ошибка, то тест запустится еще раз
                 times++;
                 Assert.Fail(times + " times");
                 System.Threading.Thread.CurrentThread.Abort();
             }
-
-            Console.WriteLine("Удаляем созданные тарифы авиаперелетов.");
- 
-            Console.WriteLine("Тест справочника тарифы авиаперелетов успешно пройден.");
+            Console.WriteLine("Тест проверки загрузки страницы Аренда.");
 
         }
 
