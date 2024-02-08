@@ -93,7 +93,7 @@ namespace AutotestExample
         {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             int times = 0;
-            Console.WriteLine("Запуск теста проверки сайта Cian.");
+            Console.WriteLine("Запуск теста проверки страницы Аренда сайта Cian.");
             Console.WriteLine("Инициализация переменных");
             string login = "efremov_test@rambler.ru";
             string password = "HiCian123";
@@ -131,6 +131,60 @@ namespace AutotestExample
             Console.WriteLine("Тест проверки загрузки страницы Аренда.");
 
         }
+
+
+        [Test, Order(2), Timeout(800000), Retry(3)]
+        [AllureSuite("Cian")]
+        [AllureFeature("CianPage")]
+        public void CianIpoCalcPage()
+        {
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            int times = 0;
+            Console.WriteLine("Запуск теста проверки страницы Ипотечный калькулятор сайта Cian.");
+            Console.WriteLine("Инициализация переменных");
+            string login = "efremov_test@rambler.ru";
+            string password = "HiCian123";
+            string expectedCianusername = "ID 113000074";
+            Console.WriteLine("Авторизация в Cian");
+            try
+            {
+                AutorizationPageObject.AutorizationCianPageObject(login, password, expectedCianusername, driver);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Не удалось авторизоваться. Тест прерван.");
+                //если на этом этапе падает ошибка, то тест запустится еще раз
+                times++;
+                Assert.Fail(times + " times");
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+            Console.WriteLine("Авторизация в Cian успешно пройдена.");
+            Console.WriteLine("Вызов JS скрипта для прокрутки в подвал сайта.");
+            //вызываем JavaScript
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("document.querySelector(\"#frontend-footer li:nth-child(12) > a\").scrollIntoView(true)");
+            try
+            {
+                driver.FindElement(By.XPath("//a[contains(text(), 'Ипотечный калькулятор')]")).Click();
+
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+                wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//h1[contains(text(), 'Ипотечный калькулятор')]")));
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Элементы страницы не загрузились.Тест прерван.");
+                //если на этом этапе падает ошибка, то тест запустится еще раз
+                times++;
+                Assert.Fail(times + " times");
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+            Console.WriteLine("Тест проверки загрузки страницы Ипотечный калькулятор пройден.");
+
+        }
+
+
+        
+
 
         [TearDown]
         public void TearDown()
