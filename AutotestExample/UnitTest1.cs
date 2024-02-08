@@ -137,6 +137,7 @@ namespace AutotestExample
         public void TearDown()
         {
             Console.WriteLine("TearDown");
+            driver.Quit();
         }
     }
 

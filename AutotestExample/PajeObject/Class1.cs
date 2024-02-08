@@ -44,6 +44,7 @@ namespace AutotestExample.PageObject
                 Console.WriteLine("Страница не загружена. Тест прерван.");
                 System.Threading.Thread.CurrentThread.Abort();
             }
+            driver.Manage().Window.Maximize();
             Console.WriteLine("Нажимаем на кнопку войти на главной странице.");
             try
             {
@@ -64,6 +65,7 @@ namespace AutotestExample.PageObject
                 driver.FindElement(By.XPath("//button[@data-name='ContinueAuthBtn']")).Click();
                 driver.FindElement(By.XPath("//input[@name='password']")).SendKeys(password);
                 driver.FindElement(By.XPath("//button[@data-name='ContinueAuthBtn']")).Click();
+                System.Threading.Thread.Sleep(5000);
             }
             catch (Exception)
             {
